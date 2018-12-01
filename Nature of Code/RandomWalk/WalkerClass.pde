@@ -3,7 +3,8 @@ class Walker {
   int min, max;
   int prevx, prevy;
   int choice;
-  boolean semidir = true;
+  boolean semidir = false;
+  boolean drawline;
 
   Walker() {
     x = floor(random(0, width));
@@ -12,8 +13,8 @@ class Walker {
     prevx = x;
     prevy = y;
     
-    min = 10; // 1
-    max = 50; // 3
+    min = 10; // 1, 10
+    max = 50; // 3, 50
   }
   
   void display() {
@@ -22,12 +23,33 @@ class Walker {
   }
   
   void track() {
-    if (floor(random(5)) == 0) {
+    drawline = true;
+    
+    if (x > width) {
+      x = x - width;
+      drawline = false;
+    } else if (x < 0) {
+      x = width + x;
+      drawline = false;
+    }
+    
+    if (y > height) {
+      y = y - height;
+      drawline = false;
+    } else if (y < 0) {
+      y = height + y;
+      drawline = false;
+    }
+    
+    if (floor(random(map(mouseY, 0, height, 1, 30))) == 0) { //if (floor(random(5)) == 0) {
       stroke(0);
     } else {
       stroke(255);
     }
-    line(prevx, prevy, x, y);
+    
+    if (drawline) {
+      line(prevx, prevy, x, y);
+    }
     prevx = x;
     prevy = y;
   }
